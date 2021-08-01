@@ -1,0 +1,1003 @@
+openapi: 3.0.2
+info:
+  title: RTA in Japan Twitter API
+  description: ""
+  version: 1.1.0
+externalDocs:
+  description: Twitter API References
+  url: https://developer.twitter.com/en/docs/api-reference-index
+servers:
+- url: https://localhost:3000/
+paths:
+  /statuses/user_timeline:
+    get:
+      description: "規定のアカウントのタイムライン(home)を取得する。"
+      tags:
+      - statuses
+      parameters:
+        - in: header
+          name: X-Auth
+          schema:
+            type: string
+            example: "ABCDEFG123456"
+      responses:
+        200:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusesResponse'
+              examples:
+                response1:
+                  $ref: '#/components/examples/statusResponse1'
+                response2:
+                  $ref: '#/components/examples/statusResponse2' 
+                response3:
+                  $ref: '#/components/examples/statusResponse3' 
+                response4:
+                  $ref: '#/components/examples/statusResponse4' 
+        503:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+  /statuses/mentions_timeline:
+    get:
+      description: "規定のアカウントに対するメンションを取得する。"
+      tags:
+      - statuses
+      parameters:
+        - in: header
+          name: X-Auth
+          schema:
+            type: string
+            example: "ABCDEFG123456"
+      responses:
+        200:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusesResponse'
+        503:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+  /statuses/hash:
+    get:
+      description: "規定のハッシュタグで検索した結果を取得する。"
+      tags:
+      - statuses
+      parameters:
+        - in: header
+          name: X-Auth
+          schema:
+            type: string
+            example: "ABCDEFG123456"
+      responses:
+        200:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusesResponse'
+        503:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+  /statuses/update:
+    post:
+      description: "ツイート投稿する"
+      tags:
+      - statuses
+      parameters:
+        - in: header
+          name: X-Auth
+          schema:
+            type: string
+            example: "ABCDEFG123456"
+      requestBody:
+        description: ""
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/requestUpdate'
+            examples:
+              request1:
+                summary: "メディア無し"
+                value: {
+                  "status": "走者乙ｗｗｗｗｗｗｗｗｗｗｗｗ\nｗｗｗｗｗ\nｗｗｗｗｗｗｗｗｗｗｗｗｗｗ",
+                  "media_ids": [],
+                  "in_reply_to_status_id": null,
+                  "attachment_url": null
+                }
+              request2:
+                summary: "メディア有り"
+                value: {
+                  "status": "走者乙ｗｗｗｗｗｗｗｗｗｗｗｗ",
+                  "media_ids": [
+                    "710511363345354753"
+                  ],
+                  "in_reply_to_status_id": null,
+                  "attachment_url": null
+                }
+              request2-1:
+                summary: "メディア4枚"
+                value: {
+                  "status": "走者乙ｗｗｗｗｗｗｗｗｗｗｗｗ",
+                  "media_ids": [
+                    "1421878566539579392",
+                    "1421878576962367491",
+                    "1421878582134001668",
+                    "1421878586374430724"
+                  ],
+                  "in_reply_to_status_id": null,
+                  "attachment_url": null
+                }
+              request3:
+                summary: "返信有り"
+                value: {
+                  "status": "走者乙ｗｗｗｗｗｗｗｗｗｗｗｗ",
+                  "media_ids": [],
+                  "in_reply_to_status_id": "1421495434665553924",
+                  "attachment_url": null
+                }
+              request4:
+                summary: "引用有り"
+                value: {
+                  "status": "走者乙ｗｗｗｗｗｗｗｗｗｗｗｗ",
+                  "media_ids": [],
+                  "in_reply_to_status_id": null,
+                  "attachment_url": "https://twitter.com/rtainjapan/status/1421878914524147713"
+                }
+              response5:
+                summary: "全部盛り"
+                value: {
+                  "status":"全部\n盛り",
+                  "media_ids":["1421879381006323716"],
+                  "in_reply_to_status_id":"1421879119529201664",
+                  "attachment_url":"https://twitter.com/rtainjapan/status/1421879119529201664"
+                }
+      responses:
+        200:
+          description: "ツイート投稿後のstatuses/user_timelineに相当するもの"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusesResponse'
+        503:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+  /media/upload/:
+    post:
+      description: "画像、動画ファイルをアップロードする。"
+      tags:
+      - media
+      parameters:
+        - in: header
+          name: X-Auth
+          schema:
+            type: string
+            example: "ABCDEFG123456"
+      requestBody:
+        description: ""
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                # 'file' will be the field name in this multipart request
+                file:
+                  type: string
+                  format: binary
+      responses:
+        200:
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  code:
+                    type: "integer"
+                    example: 0
+                  data:
+                    type: "object"
+                    properties:
+                      media_id_string:
+                        type: string
+                        example: "1234567890"
+
+        503:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+  /statuses/destroy/{id}:
+    post:
+      description: "指定したIDのツイートを削除する。"
+      tags:
+      - statuses
+      parameters:
+        - in: header
+          name: X-Auth
+          schema:
+            type: string
+            example: "ABCDEFG123456"
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: "削除対象のツイートID"
+      responses:
+        200:
+          description: "処理実行後のstatuses/user_timelineに相当するもの"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusesResponse'
+        503:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+components:
+  schemas:
+    statusesResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+        data:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/statuses"
+    statuses:
+        type: object
+        properties:
+          id_str:
+            type: string
+            example: "1050118621198921728"
+          full_text:
+            type: string
+            example: ﾃｽﾃｽｗｗｗｗｗｗｗｗｗｗｗｗｗｗｗｗｗｗｗｗｗｗｗｗｗｗｗｗｗｗｗｗｗｗｗ
+          created_at:
+            type: string
+            example: ""
+          entities:
+            $ref: '#/components/schemas/statuses_entities'
+          extended_entities:
+            $ref: '#/components/schemas/statuses_extended_entities'
+          in_reply_to_screen_name:
+            type: string
+          in_reply_to_status_id_str:
+            type: string
+          in_reply_to_user_id_str:
+            type: string
+          quoted_status:
+            $ref: '#/components/schemas/statuses'
+          user:
+            $ref: '#/components/schemas/user'
+    statuses_entities:
+      type: object
+      properties:
+        hashtags:
+          type: array
+          example: []
+          items:
+            type: object
+            properties: {}
+        symbols:
+          type: array
+          example: []
+          items:
+            type: object
+            properties: {}
+        urls:
+          type: array
+          items:
+            type: object
+            properties:
+              display_url:
+                type: string
+              expanded_url:
+                type: string
+              indices:
+                type: array
+                example:
+                - 0
+                - 10
+                items:
+                  type: integer
+              url:
+                type: string
+              user_mentions:
+                type: array
+                items:
+                  type: object
+                  properties: {}
+    statuses_extended_entities:
+      type: object
+      properties:
+        media:
+          type: object
+          properties:
+            display_url:
+              type: string
+            expanded_url:
+              type: string
+            id_str:
+              type: string
+            indices:
+              type: array
+              example:
+              - 0
+              - 10
+              items:
+                type: integer
+            media_url_http:
+              type: string
+            media_url_https:
+              type: string
+            sizes:
+              type: object
+              properties:
+                large:
+                  $ref: '#/components/schemas/mediasize'
+                medium:
+                  $ref: '#/components/schemas/mediasize'
+                small:
+                  $ref: '#/components/schemas/mediasize'
+                thumb:
+                  $ref: '#/components/schemas/mediasize'
+            type:
+              type: string
+              enum:
+              - photo
+              - video
+            url:
+              type: string
+    mediasize:
+      type: object
+      properties:
+        w:
+          type: integer
+        h:
+          type: integer
+        resize:
+          type: string
+          enum:
+          - fit
+          - crop
+    user:
+      type: object
+      properties:
+        created_at:
+          type: string
+        id_str:
+          type: string
+        name:
+          type: string
+        screen_name:
+          type: string
+        profile_image_url_https:
+          type: string
+    errorResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+              example: エラー内容とかをここに
+      example:
+        {
+          code: 10,
+          error: {
+            message: "ヤバイｗｗｗｗｗｗｗｗｗｗｗｗｗｗｗ"
+          }
+        }
+    requestUpdate:
+      type: "object"
+      properties:
+        status:
+          description: "ツイート本文"
+          type: "string"
+          example: "走者乙ｗｗｗｗｗｗｗｗｗｗｗｗｗｗｗｗｗｗｗｗ"
+        media_ids:
+          description: "事前にアップロードした画像・動画のID"
+          type: "array"
+          items:
+            type: "string"
+          example: ["710511363345354753"]
+        in_reply_to_status_id:
+          description: "リプライ先のツイートID"
+          type: "string"
+          example: ""
+        attachment_url:
+          description: "引用RTの引用元ツイートID"
+          type: "string"
+          example: ""
+  examples:
+    statusResponse1:
+      summary: "素のやつ"
+      value: {
+        code: 0,
+        data: [
+          {
+            "created_at": "Sun Aug 01 17:13:50 +0000 2021",
+            "id": 1421881871382716416,
+            "id_str": "1421881871382716416",
+            "full_text": "\u4f55\u3082\u7121\u3044\uff57\uff57\uff57\uff57\uff57\uff57\uff57\uff57\uff57\uff57\uff57\uff57\uff57\uff57\uff57\uff57\uff57\uff57\uff57\uff57\uff57\uff57\uff57\uff57\uff57\uff57\uff57",
+            "truncated": false,
+            "display_text_range": [
+                0,
+                31
+            ],
+            "entities": {
+                "hashtags": [],
+                "symbols": [],
+                "user_mentions": [],
+                "urls": []
+            },
+            "source": "<a href=\"http:\/\/example.com\" rel=\"nofollow\">srsbot<\/a>",
+            "in_reply_to_status_id": null,
+            "in_reply_to_status_id_str": null,
+            "in_reply_to_user_id": null,
+            "in_reply_to_user_id_str": null,
+            "in_reply_to_screen_name": null,
+            "user": {
+                "id": 3949537704,
+                "id_str": "3949537704",
+                "name": "flugel_twit5",
+                "screen_name": "flugel_twit5",
+                "location": "",
+                "description": "",
+                "url": null,
+                "entities": {
+                    "description": {
+                        "urls": []
+                    }
+                },
+                "protected": true,
+                "followers_count": 0,
+                "friends_count": 0,
+                "listed_count": 0,
+                "created_at": "Mon Oct 19 18:21:05 +0000 2015",
+                "favourites_count": 0,
+                "utc_offset": null,
+                "time_zone": null,
+                "geo_enabled": false,
+                "verified": false,
+                "statuses_count": 86,
+                "lang": null,
+                "contributors_enabled": false,
+                "is_translator": false,
+                "is_translation_enabled": false,
+                "profile_background_color": "C0DEED",
+                "profile_background_image_url": "http:\/\/abs.twimg.com\/images\/themes\/theme1\/bg.png",
+                "profile_background_image_url_https": "https:\/\/abs.twimg.com\/images\/themes\/theme1\/bg.png",
+                "profile_background_tile": false,
+                "profile_image_url": "http:\/\/abs.twimg.com\/sticky\/default_profile_images\/default_profile_normal.png",
+                "profile_image_url_https": "https:\/\/abs.twimg.com\/sticky\/default_profile_images\/default_profile_normal.png",
+                "profile_link_color": "1DA1F2",
+                "profile_sidebar_border_color": "C0DEED",
+                "profile_sidebar_fill_color": "DDEEF6",
+                "profile_text_color": "333333",
+                "profile_use_background_image": true,
+                "has_extended_profile": false,
+                "default_profile": true,
+                "default_profile_image": true,
+                "following": false,
+                "follow_request_sent": false,
+                "notifications": false,
+                "translator_type": "none",
+                "withheld_in_countries": []
+            },
+            "geo": null,
+            "coordinates": null,
+            "place": null,
+            "contributors": null,
+            "is_quote_status": false,
+            "retweet_count": 0,
+            "favorite_count": 0,
+            "favorited": false,
+            "retweeted": false,
+            "lang": "ja"
+          }
+        ]
+      }
+    statusResponse2:
+        summary: "返信つき"
+        value: {
+        code: 0,
+        data: [
+          {
+            "created_at": "Sun Aug 01 17:13:25 +0000 2021",
+            "id": 1421881767728877576,
+            "id_str": "1421881767728877576",
+            "full_text": "\u8fd4\u4fe1\uff57\uff57\uff57\uff57\uff57\uff57\uff57\uff57\uff57\uff57\uff57",
+            "truncated": false,
+            "display_text_range": [
+                0,
+                13
+            ],
+            "entities": {
+                "hashtags": [],
+                "symbols": [],
+                "user_mentions": [],
+                "urls": []
+            },
+            "source": "<a href=\"http:\/\/example.com\" rel=\"nofollow\">srsbot<\/a>",
+            "in_reply_to_status_id": 1421879443383996416,
+            "in_reply_to_status_id_str": "1421879443383996416",
+            "in_reply_to_user_id": 3949537704,
+            "in_reply_to_user_id_str": "3949537704",
+            "in_reply_to_screen_name": "flugel_twit5",
+            "user": {
+                "id": 3949537704,
+                "id_str": "3949537704",
+                "name": "flugel_twit5",
+                "screen_name": "flugel_twit5",
+                "location": "",
+                "description": "",
+                "url": null,
+                "entities": {
+                    "description": {
+                        "urls": []
+                    }
+                },
+                "protected": true,
+                "followers_count": 0,
+                "friends_count": 0,
+                "listed_count": 0,
+                "created_at": "Mon Oct 19 18:21:05 +0000 2015",
+                "favourites_count": 0,
+                "utc_offset": null,
+                "time_zone": null,
+                "geo_enabled": false,
+                "verified": false,
+                "statuses_count": 85,
+                "lang": null,
+                "contributors_enabled": false,
+                "is_translator": false,
+                "is_translation_enabled": false,
+                "profile_background_color": "C0DEED",
+                "profile_background_image_url": "http:\/\/abs.twimg.com\/images\/themes\/theme1\/bg.png",
+                "profile_background_image_url_https": "https:\/\/abs.twimg.com\/images\/themes\/theme1\/bg.png",
+                "profile_background_tile": false,
+                "profile_image_url": "http:\/\/abs.twimg.com\/sticky\/default_profile_images\/default_profile_normal.png",
+                "profile_image_url_https": "https:\/\/abs.twimg.com\/sticky\/default_profile_images\/default_profile_normal.png",
+                "profile_link_color": "1DA1F2",
+                "profile_sidebar_border_color": "C0DEED",
+                "profile_sidebar_fill_color": "DDEEF6",
+                "profile_text_color": "333333",
+                "profile_use_background_image": true,
+                "has_extended_profile": false,
+                "default_profile": true,
+                "default_profile_image": true,
+                "following": false,
+                "follow_request_sent": false,
+                "notifications": false,
+                "translator_type": "none",
+                "withheld_in_countries": []
+            },
+            "geo": null,
+            "coordinates": null,
+            "place": null,
+            "contributors": null,
+            "is_quote_status": false,
+            "retweet_count": 0,
+            "favorite_count": 0,
+            "favorited": false,
+            "retweeted": false,
+            "lang": "ja"
+        }
+                    ]
+                  }
+    statusResponse3:
+      summary: "引用つき"
+      value: {
+        code: 0,
+        data: [
+        {
+            "created_at": "Sun Aug 01 17:02:53 +0000 2021",
+            "id": 1421879119529201664,
+            "id_str": "1421879119529201664",
+            "full_text": "\u5f15\u7528 https:\/\/t.co\/leYA1aRurb",
+            "truncated": false,
+            "display_text_range": [
+                0,
+                2
+            ],
+            "entities": {
+                "hashtags": [],
+                "symbols": [],
+                "user_mentions": [],
+                "urls": [
+                    {
+                        "url": "https:\/\/t.co\/leYA1aRurb",
+                        "expanded_url": "https:\/\/twitter.com\/flugel_twit5\/status\/1421878914524147713",
+                        "display_url": "twitter.com\/flugel_twit5\/s\u2026",
+                        "indices": [
+                            3,
+                            26
+                        ]
+                    }
+                ]
+            },
+            "source": "<a href=\"http:\/\/example.com\" rel=\"nofollow\">srsbot<\/a>",
+            "in_reply_to_status_id": null,
+            "in_reply_to_status_id_str": null,
+            "in_reply_to_user_id": null,
+            "in_reply_to_user_id_str": null,
+            "in_reply_to_screen_name": null,
+            "user": {
+                "id": 3949537704,
+                "id_str": "3949537704",
+                "name": "flugel_twit5",
+                "screen_name": "flugel_twit5",
+                "location": "",
+                "description": "",
+                "url": null,
+                "entities": {
+                    "description": {
+                        "urls": []
+                    }
+                },
+                "protected": true,
+                "followers_count": 0,
+                "friends_count": 0,
+                "listed_count": 0,
+                "created_at": "Mon Oct 19 18:21:05 +0000 2015",
+                "favourites_count": 0,
+                "utc_offset": null,
+                "time_zone": null,
+                "geo_enabled": false,
+                "verified": false,
+                "statuses_count": 84,
+                "lang": null,
+                "contributors_enabled": false,
+                "is_translator": false,
+                "is_translation_enabled": false,
+                "profile_background_color": "C0DEED",
+                "profile_background_image_url": "http:\/\/abs.twimg.com\/images\/themes\/theme1\/bg.png",
+                "profile_background_image_url_https": "https:\/\/abs.twimg.com\/images\/themes\/theme1\/bg.png",
+                "profile_background_tile": false,
+                "profile_image_url": "http:\/\/abs.twimg.com\/sticky\/default_profile_images\/default_profile_normal.png",
+                "profile_image_url_https": "https:\/\/abs.twimg.com\/sticky\/default_profile_images\/default_profile_normal.png",
+                "profile_link_color": "1DA1F2",
+                "profile_sidebar_border_color": "C0DEED",
+                "profile_sidebar_fill_color": "DDEEF6",
+                "profile_text_color": "333333",
+                "profile_use_background_image": true,
+                "has_extended_profile": false,
+                "default_profile": true,
+                "default_profile_image": true,
+                "following": false,
+                "follow_request_sent": false,
+                "notifications": false,
+                "translator_type": "none",
+                "withheld_in_countries": []
+            },
+            "geo": null,
+            "coordinates": null,
+            "place": null,
+            "contributors": null,
+            "is_quote_status": true,
+            "quoted_status_id": 1421878914524147713,
+            "quoted_status_id_str": "1421878914524147713",
+            "quoted_status_permalink": {
+                "url": "https:\/\/t.co\/leYA1aRurb",
+                "expanded": "https:\/\/twitter.com\/flugel_twit5\/status\/1421878914524147713",
+                "display": "twitter.com\/flugel_twit5\/s\u2026"
+            },
+            "quoted_status": {
+                "created_at": "Sun Aug 01 17:02:05 +0000 2021",
+                "id": 1421878914524147713,
+                "id_str": "1421878914524147713",
+                "full_text": "\u6539\u884c\n\u3068\n\u304b",
+                "truncated": false,
+                "display_text_range": [
+                    0,
+                    6
+                ],
+                "entities": {
+                    "hashtags": [],
+                    "symbols": [],
+                    "user_mentions": [],
+                    "urls": []
+                },
+                "source": "<a href=\"http:\/\/example.com\" rel=\"nofollow\">srsbot<\/a>",
+                "in_reply_to_status_id": null,
+                "in_reply_to_status_id_str": null,
+                "in_reply_to_user_id": null,
+                "in_reply_to_user_id_str": null,
+                "in_reply_to_screen_name": null,
+                "user": {
+                    "id": 3949537704,
+                    "id_str": "3949537704",
+                    "name": "flugel_twit5",
+                    "screen_name": "flugel_twit5",
+                    "location": "",
+                    "description": "",
+                    "url": null,
+                    "entities": {
+                        "description": {
+                            "urls": []
+                        }
+                    },
+                    "protected": true,
+                    "followers_count": 0,
+                    "friends_count": 0,
+                    "listed_count": 0,
+                    "created_at": "Mon Oct 19 18:21:05 +0000 2015",
+                    "favourites_count": 0,
+                    "utc_offset": null,
+                    "time_zone": null,
+                    "geo_enabled": false,
+                    "verified": false,
+                    "statuses_count": 84,
+                    "lang": null,
+                    "contributors_enabled": false,
+                    "is_translator": false,
+                    "is_translation_enabled": false,
+                    "profile_background_color": "C0DEED",
+                    "profile_background_image_url": "http:\/\/abs.twimg.com\/images\/themes\/theme1\/bg.png",
+                    "profile_background_image_url_https": "https:\/\/abs.twimg.com\/images\/themes\/theme1\/bg.png",
+                    "profile_background_tile": false,
+                    "profile_image_url": "http:\/\/abs.twimg.com\/sticky\/default_profile_images\/default_profile_normal.png",
+                    "profile_image_url_https": "https:\/\/abs.twimg.com\/sticky\/default_profile_images\/default_profile_normal.png",
+                    "profile_link_color": "1DA1F2",
+                    "profile_sidebar_border_color": "C0DEED",
+                    "profile_sidebar_fill_color": "DDEEF6",
+                    "profile_text_color": "333333",
+                    "profile_use_background_image": true,
+                    "has_extended_profile": false,
+                    "default_profile": true,
+                    "default_profile_image": true,
+                    "following": false,
+                    "follow_request_sent": false,
+                    "notifications": false,
+                    "translator_type": "none",
+                    "withheld_in_countries": []
+                },
+                "geo": null,
+                "coordinates": null,
+                "place": null,
+                "contributors": null,
+                "is_quote_status": false,
+                "retweet_count": 0,
+                "favorite_count": 0,
+                "favorited": false,
+                "retweeted": false,
+                "lang": "ja"
+            },
+            "retweet_count": 0,
+            "favorite_count": 0,
+            "favorited": false,
+            "retweeted": false,
+            "possibly_sensitive": false,
+            "lang": "ja"
+        }
+                    ]
+                  }
+    statusResponse4:
+      summary: "メディア付き"
+      value: {
+        code: 0,
+        data: [
+          {
+            "created_at": "Sun Aug 01 17:15:11 +0000 2021",
+            "id": 1421882211687567362,
+            "id_str": "1421882211687567362",
+            "full_text": "\u30e1\u30c7\u30a3\u30a2\u8907\u6570\uff57\uff57\uff57\uff57\uff57\uff57\uff57\uff57\uff57\uff57\uff57\uff57 https:\/\/t.co\/PQO9TpOHBK",
+            "truncated": false,
+            "display_text_range": [
+                0,
+                18
+            ],
+            "entities": {
+                "hashtags": [],
+                "symbols": [],
+                "user_mentions": [],
+                "urls": [],
+                "media": [
+                    {
+                        "id": 1421882141936259078,
+                        "id_str": "1421882141936259078",
+                        "indices": [
+                            19,
+                            42
+                        ],
+                        "media_url": "http:\/\/pbs.twimg.com\/media\/E7uKRk6VEAYRX3U.png",
+                        "media_url_https": "https:\/\/pbs.twimg.com\/media\/E7uKRk6VEAYRX3U.png",
+                        "url": "https:\/\/t.co\/PQO9TpOHBK",
+                        "display_url": "pic.twitter.com\/PQO9TpOHBK",
+                        "expanded_url": "https:\/\/twitter.com\/flugel_twit5\/status\/1421882211687567362\/photo\/1",
+                        "type": "photo",
+                        "sizes": {
+                            "medium": {
+                                "w": 385,
+                                "h": 137,
+                                "resize": "fit"
+                            },
+                            "large": {
+                                "w": 385,
+                                "h": 137,
+                                "resize": "fit"
+                            },
+                            "thumb": {
+                                "w": 137,
+                                "h": 137,
+                                "resize": "crop"
+                            },
+                            "small": {
+                                "w": 385,
+                                "h": 137,
+                                "resize": "fit"
+                            }
+                        }
+                    }
+                ]
+            },
+            "extended_entities": {
+                "media": [
+                    {
+                        "id": 1421882141936259078,
+                        "id_str": "1421882141936259078",
+                        "indices": [
+                            19,
+                            42
+                        ],
+                        "media_url": "http:\/\/pbs.twimg.com\/media\/E7uKRk6VEAYRX3U.png",
+                        "media_url_https": "https:\/\/pbs.twimg.com\/media\/E7uKRk6VEAYRX3U.png",
+                        "url": "https:\/\/t.co\/PQO9TpOHBK",
+                        "display_url": "pic.twitter.com\/PQO9TpOHBK",
+                        "expanded_url": "https:\/\/twitter.com\/flugel_twit5\/status\/1421882211687567362\/photo\/1",
+                        "type": "photo",
+                        "sizes": {
+                            "medium": {
+                                "w": 385,
+                                "h": 137,
+                                "resize": "fit"
+                            },
+                            "large": {
+                                "w": 385,
+                                "h": 137,
+                                "resize": "fit"
+                            },
+                            "thumb": {
+                                "w": 137,
+                                "h": 137,
+                                "resize": "crop"
+                            },
+                            "small": {
+                                "w": 385,
+                                "h": 137,
+                                "resize": "fit"
+                            }
+                        }
+                    },
+                    {
+                        "id": 1421882184135102474,
+                        "id_str": "1421882184135102474",
+                        "indices": [
+                            19,
+                            42
+                        ],
+                        "media_url": "http:\/\/pbs.twimg.com\/media\/E7uKUCHUUAodbal.png",
+                        "media_url_https": "https:\/\/pbs.twimg.com\/media\/E7uKUCHUUAodbal.png",
+                        "url": "https:\/\/t.co\/PQO9TpOHBK",
+                        "display_url": "pic.twitter.com\/PQO9TpOHBK",
+                        "expanded_url": "https:\/\/twitter.com\/flugel_twit5\/status\/1421882211687567362\/photo\/1",
+                        "type": "photo",
+                        "sizes": {
+                            "medium": {
+                                "w": 290,
+                                "h": 122,
+                                "resize": "fit"
+                            },
+                            "small": {
+                                "w": 290,
+                                "h": 122,
+                                "resize": "fit"
+                            },
+                            "large": {
+                                "w": 290,
+                                "h": 122,
+                                "resize": "fit"
+                            },
+                            "thumb": {
+                                "w": 122,
+                                "h": 122,
+                                "resize": "crop"
+                            }
+                        }
+                    }
+                ]
+            },
+            "source": "<a href=\"http:\/\/example.com\" rel=\"nofollow\">srsbot<\/a>",
+            "in_reply_to_status_id": null,
+            "in_reply_to_status_id_str": null,
+            "in_reply_to_user_id": null,
+            "in_reply_to_user_id_str": null,
+            "in_reply_to_screen_name": null,
+            "user": {
+                "id": 3949537704,
+                "id_str": "3949537704",
+                "name": "flugel_twit5",
+                "screen_name": "flugel_twit5",
+                "location": "",
+                "description": "",
+                "url": null,
+                "entities": {
+                    "description": {
+                        "urls": []
+                    }
+                },
+                "protected": true,
+                "followers_count": 0,
+                "friends_count": 0,
+                "listed_count": 0,
+                "created_at": "Mon Oct 19 18:21:05 +0000 2015",
+                "favourites_count": 0,
+                "utc_offset": null,
+                "time_zone": null,
+                "geo_enabled": false,
+                "verified": false,
+                "statuses_count": 87,
+                "lang": null,
+                "contributors_enabled": false,
+                "is_translator": false,
+                "is_translation_enabled": false,
+                "profile_background_color": "C0DEED",
+                "profile_background_image_url": "http:\/\/abs.twimg.com\/images\/themes\/theme1\/bg.png",
+                "profile_background_image_url_https": "https:\/\/abs.twimg.com\/images\/themes\/theme1\/bg.png",
+                "profile_background_tile": false,
+                "profile_image_url": "http:\/\/abs.twimg.com\/sticky\/default_profile_images\/default_profile_normal.png",
+                "profile_image_url_https": "https:\/\/abs.twimg.com\/sticky\/default_profile_images\/default_profile_normal.png",
+                "profile_link_color": "1DA1F2",
+                "profile_sidebar_border_color": "C0DEED",
+                "profile_sidebar_fill_color": "DDEEF6",
+                "profile_text_color": "333333",
+                "profile_use_background_image": true,
+                "has_extended_profile": false,
+                "default_profile": true,
+                "default_profile_image": true,
+                "following": false,
+                "follow_request_sent": false,
+                "notifications": false,
+                "translator_type": "none",
+                "withheld_in_countries": []
+            },
+            "geo": null,
+            "coordinates": null,
+            "place": null,
+            "contributors": null,
+            "is_quote_status": false,
+            "retweet_count": 0,
+            "favorite_count": 0,
+            "favorited": false,
+            "retweeted": false,
+            "possibly_sensitive": false,
+            "lang": "ja"
+          }
+        ]
+      }

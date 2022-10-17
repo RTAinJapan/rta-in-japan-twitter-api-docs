@@ -291,22 +291,6 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/media'
-          referenced_tweets:
-            type: array
-            items:
-              type: object
-              properties:
-                type:
-                  type: string
-                  enum:
-                    - retweeted
-                    - quoted
-                    - replied_to
-                id:
-                  type: string
-              required:
-                - type
-                - id
           in_reply_to_status:
             $ref: '#/components/schemas/statuses'
           quoted_status:

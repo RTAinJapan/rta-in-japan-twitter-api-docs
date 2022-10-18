@@ -36,6 +36,8 @@ paths:
                   $ref: '#/components/examples/statusResponse3' 
                 response4:
                   $ref: '#/components/examples/statusResponse4' 
+                response5:
+                  $ref: '#/components/examples/statusResponse5'
         503:
           description: ""
           content:
@@ -547,5 +549,43 @@ components:
                 url: https://pbs.twimg.com/media/FfRb2TZUoAEmWY_.jpg
                 width: 400
                 height: 400
+      statusResponse5:
+        summary: 画像・動画つき
+        value:
+          code: 0
+          data:
+          - id: '1582229831671902208'
+            text: 動画・画像つきツイートてすてす https://t.co/UVG5ApQDjm https://t.co/vuzbXpzTGm
+            created_at: '2022-10-18T04:39:22.000Z'
+            entities:
+              urls:
+                - start: 16
+                  end: 39
+                  url: https://t.co/UVG5ApQDjm
+                  expanded_url: https://twitter.com/i/web/status/1582229831671902208
+                  display_url: twitter.com/i/web/status/1…
+                - start: 40
+                  end: 63
+                  url: https://t.co/vuzbXpzTGm
+                  expanded_url: https://twitter.com/dev_cma/status/1582229831671902208/video/1
+                  display_url: pic.twitter.com/vuzbXpzTGm
+                  media_key: '7_1582229783521288194'
+            media:
+              - width: 720
+                media_key: '7_1582229783521288194'
+                preview_image_url: https://pbs.twimg.com/ext_tw_video_thumb/1582229783521288194/pu/img/E63l4dXvk1wL6EJm.jpg
+                type: video
+                height: 1280
+              - width: 2048
+                url: https://pbs.twimg.com/media/FfU1mugVUAA4yum.jpg
+                media_key: '3_1582229783525543936'
+                type: photo
+                height: 1536
+            user:
+              id: '1543882205264355328'
+              name: dev-cma
+              username: dev_cma
+              profile_image_url: https://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png
+              created_at: '2022-07-04T09:00:38.000Z'
   
   

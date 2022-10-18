@@ -373,6 +373,24 @@ components:
             type: array
             items:
               type: object
+              properties:
+                start:
+                  type: number
+                  example: 0
+                end:
+                  type: number
+                  example: 11
+                id:
+                  type: string
+                  example: '2244994945'
+                username:
+                  type: string
+                  example: TwitterDev
+              required:
+                - start
+                - end
+                - id
+                - username
           cashtags:
             type: array
             items:
@@ -463,6 +481,12 @@ components:
           - id: '1581992205912195072'
             text: '@TwitterDev こんにちは～～～～～'
             created_at: '2022-10-17T12:55:08.000Z'
+            entities:
+              mentions:
+              - start: 0
+                end: 11
+                username: TwitterDev
+                id: '2244994945'
             user: 
               id: '1543882205264355328'
               username: dev_cma

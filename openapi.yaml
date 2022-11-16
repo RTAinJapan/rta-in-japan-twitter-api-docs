@@ -156,7 +156,7 @@ paths:
                   "status": "走者乙ｗｗｗｗｗｗｗｗｗｗｗｗ",
                   "media_ids": [],
                   "in_reply_to_tweet_id": null,
-                  "quote_tweet_id": "https://twitter.com/rtainjapan/status/1421878914524147713"
+                  "quote_tweet_id": "1421878914524147713"
                 }
               response5:
                 summary: "全部盛り"
@@ -164,7 +164,7 @@ paths:
                   "status":"全部\n盛り",
                   "media_ids":["1421879381006323716"],
                   "in_reply_to_tweet_id":"1421879119529201664",
-                  "quote_tweet_id":"https://twitter.com/rtainjapan/status/1421879119529201664"
+                  "quote_tweet_id":"1421879119529201664"
                 }
       responses:
         200:

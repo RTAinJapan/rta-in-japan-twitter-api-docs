@@ -116,8 +116,8 @@ paths:
                 value: {
                   "status": "走者乙ｗｗｗｗｗｗｗｗｗｗｗｗ\nｗｗｗｗｗ\nｗｗｗｗｗｗｗｗｗｗｗｗｗｗ",
                   "media_ids": [],
-                  "in_reply_to_status_id": null,
-                  "attachment_url": null
+                  "in_reply_to_tweet_id": null,
+                  "quote_tweet_id": null
                 }
               request2:
                 summary: "メディア有り"
@@ -126,8 +126,8 @@ paths:
                   "media_ids": [
                     "710511363345354753"
                   ],
-                  "in_reply_to_status_id": null,
-                  "attachment_url": null
+                  "in_reply_to_tweet_id": null,
+                  "quote_tweet_id": null
                 }
               request2-1:
                 summary: "メディア4枚"
@@ -139,32 +139,32 @@ paths:
                     "1421878582134001668",
                     "1421878586374430724"
                   ],
-                  "in_reply_to_status_id": null,
-                  "attachment_url": null
+                  "in_reply_to_tweet_id": null,
+                  "quote_tweet_id": null
                 }
               request3:
                 summary: "返信有り"
                 value: {
                   "status": "走者乙ｗｗｗｗｗｗｗｗｗｗｗｗ",
                   "media_ids": [],
-                  "in_reply_to_status_id": "1421495434665553924",
-                  "attachment_url": null
+                  "in_reply_to_tweet_id": "1421495434665553924",
+                  "quote_tweet_id": null
                 }
               request4:
                 summary: "引用有り"
                 value: {
                   "status": "走者乙ｗｗｗｗｗｗｗｗｗｗｗｗ",
                   "media_ids": [],
-                  "in_reply_to_status_id": null,
-                  "attachment_url": "https://twitter.com/rtainjapan/status/1421878914524147713"
+                  "in_reply_to_tweet_id": null,
+                  "quote_tweet_id": "https://twitter.com/rtainjapan/status/1421878914524147713"
                 }
               response5:
                 summary: "全部盛り"
                 value: {
                   "status":"全部\n盛り",
                   "media_ids":["1421879381006323716"],
-                  "in_reply_to_status_id":"1421879119529201664",
-                  "attachment_url":"https://twitter.com/rtainjapan/status/1421879119529201664"
+                  "in_reply_to_tweet_id":"1421879119529201664",
+                  "quote_tweet_id":"https://twitter.com/rtainjapan/status/1421879119529201664"
                 }
       responses:
         200:
@@ -450,11 +450,11 @@ components:
               type: string
             example:
               - '710511363345354753'
-          in_reply_to_status_id:
+          in_reply_to_tweet_id:
             description: リプライ先のツイートID
             type: string
             example: ''
-          attachment_url:
+          quote_tweet_id:
             description: 引用RTの引用元ツイートID
             type: string
             example: ''

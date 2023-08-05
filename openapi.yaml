@@ -434,7 +434,7 @@ components:
             example: ''
     examples:
       statusResponse1:
-        summary: 素のやつ
+        summary: 共通
         value:
           code: 0
           data:
